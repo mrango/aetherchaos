@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ==========================================================================
+       DOCUMENT METADATA & STRICT CONTENT SECURITY POLICY (CSP)
+       Enforces strict self-hosted origin rules for scripts, styles, and media
+       with zero inline script or inline style execution permitted.
+       ========================================================================== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'self';">
+  <meta name="description" content="AetherChaos — Interactive Google Cloud & Microservices Resilience, Chaos Engineering, and SRE Telemetry Simulator">
+  <title>AetherChaos — Google Cloud &amp; Microservices Resilience Simulator</title>
+
+  <!-- Main Mission Control Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Deferred Simulation Engine & Interactive Canvas Visualizer Scripts -->
+  <script defer src="simulator-engine.js"></script>
+  <script defer src="visualizer-app.js"></script>
+</head>
+<body>
+  <!-- ==========================================================================
+       APPLICATION SHELL WRAPPER
+       Houses the top navigation/control header, global KPI telemetry ribbon,
+       chaos injection deck, interactive topology canvas stage, and SRE sidebar.
+       ========================================================================== -->
+  <div class="app-shell">
+
+    <!-- ========================================================================
+         TOP MISSION CONTROL HEADER BAR
+         Displays application branding, architecture preset selector, ingress
+         traffic load slider, GKE Autopilot auto-healing toggle, and global status.
+         ======================================================================== -->
+    <header class="top-header" role="banner">
+      <!-- Brand Identity & Simulator Subtitle -->
+      <div class="brand-block">
+        <div class="brand-logo" aria-hidden="true">
+          <span class="brand-orb"></span>
+          <span class="brand-ring"></span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <h1 class="brand-title">AetherChaos</h1>
+            <span class="brand-tag">SRE MISSION CONTROL</span>
+          </div>
+          <p class="brand-subtitle">Google Cloud &amp; Microservices Resilience Simulator</p>
+        </div>
+      </div>
+
+      <!-- Architecture Preset & Traffic Load Controls -->
+      <div class="header-controls" role="group" aria-label="Simulation Global Controls">
+        <!-- Cloud Topology Preset Selector -->
+        <div class="control-group">
+          <label for="topology-select" class="control-label">CLOUD ARCHITECTURE TOPOLOGY</label>
+          <div class="select-wrapper">
+            <select id="topology-select" class="control-select" aria-label="Select Cloud Architecture Topology">
+              <option value="genai_rag" selected>Gemini 4 Argon RAG &amp; Vertex Pipeline</option>
+              <option value="ecommerce">GCP E-Commerce Cloud Native</option>
+              <option value="payments">Global FinTech Payment Mesh</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Ingress Traffic Load Slider -->
+        <div class="control-group traffic-control-group">
+          <div class="control-label-row">
+            <label for="traffic-slider" class="control-label">INGRESS TRAFFIC LOAD</label>
+            <span id="traffic-value" class="control-value-readout">1,400 req/s</span>
+          </div>
+          <input
+            type="range"
+            id="traffic-slider"
+            class="traffic-slider"
+            min="200"
+            max="5000"
+            step="100"
+            value="1400"
+            aria-label="Ingress Traffic Load in Requests Per Second"
+          >
+        </div>
+
+        <!-- GKE Autopilot & Circuit Breaker Auto-Heal Toggle -->
+        <div class="control-group toggle-control-group">
+          <label for="autoheal-toggle" class="toggle-Switch-label">
+            <input type="checkbox" id="autoheal-toggle" class="toggle-checkbox" checked>
+            <span class="toggle-track" aria-hidden="true">
+              <span class="toggle-thumb"></span>
+            </span>
+            <span class="toggle-text-stack">
+              <span class="control-label">GKE AUTOPILOT &amp; MESH</span>
+              <span class="toggle-subtext">HPA + Circuit Breakers</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Global System Health Badge -->
+      <div class="header-status-zone">
+        <span class="status-zone-label">GLOBAL POSTURE</span>
+        <div id="system-status-badge" class="system-status-badge status-healthy" role="status" aria-live="polite">
+          HEALTHY
+        </div>
+      </div>
+    </header>
+
+    <!-- ========================================================================
+         TOP KPI TELEMETRY RIBBON & CHAOS INJECTION CONTROL DECK
+         Combines real-time Golden Signal KPI cards with one-click Chaos
+         Engineering fault injection controls.
+         ======================================================================== -->
+    <section class="telemetry-and-chaos-bar" aria-label="Golden Signals Telemetry and Chaos Injection Controls">
+      <!-- Five Golden Signal KPI Cards -->
+      <div class="kpi-ribbon">
+        <!-- Global Availability SLO Card -->
+        <article class="kpi-card kpi-card-cyan">
+          <div class="kpi-header">
+            <span class="kpi-label">GLOBAL SLO AVAILABILITY</span>
+            <span class="kpi-pill">TARGET 99.95%</span>
+          </div>
+          <div id="kpi-slo" class="kpi-value">99.99%</div>
+          <div class="kpi-footer">Rolling 60s service budget</div>
+        </article>
+
+        <!-- End-to-End P99 Latency Card -->
+        <article class="kpi-card kpi-card-purple">
+          <div class="kpi-header">
+            <span class="kpi-label">GLOBAL P99 LATENCY</span>
+            <span class="kpi-pill">END-TO-END</span>
+          </div>
+          <div id="kpi-latency" class="kpi-value">42 ms</div>
+          <div class="kpi-footer">Edge LB to storage commit</div>
+        </article>
+
+        <!-- Real-Time Ingress Throughput Card -->
+        <article class="kpi-card kpi-card-emerald">
+          <div class="kpi-header">
+            <span class="kpi-label">INGRESS THROUGHPUT</span>
+            <span class="kpi-pill">CLOUD ARMOR</span>
+          </div>
+          <div id="kpi-rps" class="kpi-value">1,400 req/s</div>
+          <div class="kpi-footer">Live global HTTP/3 stream</div>
+        </article>
+
+        <!-- HTTP 5xx Error Rate Card -->
+        <article class="kpi-card kpi-card-crimson">
+          <div class="kpi-header">
+            <span class="kpi-label">5XX ERROR RATE</span>
+            <span class="kpi-pill">SLO BURN</span>
+          </div>
+          <div id="kpi-error-rate" class="kpi-value">0.01%</div>
+          <div class="kpi-footer">Dropped + timeout responses</div>
+        </article>
+
+        <!-- Active GKE Autopilot Pods Card -->
+        <article class="kpi-card kpi-card-amber">
+          <div class="kpi-header">
+            <span class="kpi-label">ACTIVE GKE PODS</span>
+            <span class="kpi-pill">AUTOSCALER</span>
+          </div>
+          <div id="kpi-pods" class="kpi-value">38</div>
+          <div class="kpi-footer">Horizontal pod replicas</div>
+        </article>
+      </div>
+
+      <!-- Chaos Engineering Fault Injection Control Deck -->
+      <div class="chaos-deck" role="toolbar" aria-label="Chaos Engineering Fault Injection Deck">
+        <div class="chaos-deck-header">
+          <span class="chaos-deck-title">CHAOS INJECTION DECK</span>
+          <span class="chaos-deck-hint">Inject live production faults to test resilience</span>
+        </div>
+        <div class="chaos-buttons-row">
+          <button type="button" id="btn-kill-node" class="chaos-btn chaos-btn-danger">
+            💥 Kill Random Service
+          </button>
+          <button type="button" id="btn-traffic-spike" class="chaos-btn chaos-btn-warning">
+            🌊 Flash Traffic Surge (3x)
+          </button>
+          <button type="button" id="btn-latency-storm" class="chaos-btn chaos-btn-amber">
+            ⚡ Region Latency Storm
+          </button>
+          <button type="button" id="btn-cascade-db" class="chaos-btn chaos-btn-purple">
+            🔥 Saturate Primary DB
+          </button>
+          <button type="button" id="btn-heal-all" class="chaos-btn chaos-btn-emerald">
+            🛡️ Auto-Heal &amp; Reset Breakers
+          </button>
+          <button type="button" id="btn-reset" class="chaos-btn chaos-btn-neutral">
+            🔄 Reset Topology
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================
+         MAIN WORKSPACE GRID
+         Left/Center: Interactive Architecture Topology Canvas & Visual Legend.
+         Right Sidebar: Deep Node Inspector, Live Golden Signals Sparkline Chart,
+         and Real-Time SRE Incident & Auto-Remediation Event Log.
+         ======================================================================== -->
+    <main class="workspace-grid">
+
+      <!-- ======================================================================
+           MAIN INTERACTIVE GRAPH STAGE (LEFT / CENTER COLUMN)
+           Renders animated microservice nodes, request particles, shockwaves,
+           circuit breaker gates, and live pod replica badges.
+           ====================================================================== -->
+      <section class="canvas-stage-panel" aria-label="Interactive Cloud Topology Graph">
+        <!-- Stage Top Overlay Bar: Instructions & Live Architecture Context -->
+        <div class="stage-top-bar">
+          <div class="stage-title-group">
+            <span class="stage-live-dot" aria-hidden="true"></span>
+            <h2 class="stage-title">LIVE CLOUD MESH TOPOLOGY &amp; PACKET TELEMETRY</h2>
+          </div>
+          <div class="stage-interaction-hints">
+            <span class="hint-chip"><kbd>Click Node</kbd> Inspect Telemetry</span>
+            <span class="hint-chip"><kbd>Double-Click Node</kbd> Toggle Outage / Restore</span>
+            <span class="hint-chip"><kbd>Drag Node</kbd> Reposition Mesh</span>
+          </div>
+        </div>
+
+        <!-- Responsive Canvas Container -->
+        <div class="canvas-viewport">
+          <canvas id="topology-canvas" width="1100" height="620" aria-label="Interactive Google Cloud Microservices Graph"></canvas>
+        </div>
+
+        <!-- Bottom Legend & Resilience Guide Bar -->
+        <div class="stage-legend-bar" aria-label="Topology Node and Particle Status Legend">
+          <div class="legend-group">
+            <span class="legend-item">
+              <span class="legend-dot legend-healthy"></span>
+              Healthy
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot legend-degraded"></span>
+              Degraded / High Latency
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot legend-circuit-open"></span>
+              Circuit Breaker Open
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot legend-down"></span>
+              Outage / Down
+            </span>
+            <span class="legend-item">
+              <span class="legend-dot legend-scaling"></span>
+              HPA Scaling
+            </span>
+          </div>
+          <div class="legend-meta">
+            <span>Particles: Cyan = 200 OK &bull; Amber = High Latency &bull; Crimson = 5xx Drop</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           RIGHT SIDEBAR: NODE INSPECTOR + TELEMETRY SPARKLINES + SRE EVENT LOG
+           Provides granular control over the currently selected microservice node,
+           historical P99/SLO chart, and real-time incident timeline.
+           ====================================================================== -->
+      <aside class="sre-sidebar" aria-label="SRE Telemetry Inspector and Event Stream">
+
+        <!-- Card 1: Selected Microservice Node Inspector -->
+        <section id="node-inspector" class="sidebar-card inspector-card" aria-label="Selected Service Node Inspector">
+          <div class="card-header-row">
+            <div class="inspector-title-stack">
+              <span class="section-eyebrow">SELECTED SERVICE INSPECTOR</span>
+              <h2 id="inspector-title" class="inspector-node-title">Vertex AI Gemini 4 Argon</h2>
+              <span id="inspector-type" class="inspector-node-type">Managed GenAI Inference Endpoint</span>
+            </div>
+            <span id="inspector-status" class="inspector-status-badge status-healthy">HEALTHY</span>
+          </div>
+
+          <!-- Node Telemetry Metrics 2x2 Grid -->
+          <div class="inspector-metrics-grid">
+            <div class="inspector-metric-box">
+              <span class="inspector-metric-label">CPU / UTILIZATION</span>
+              <span id="inspector-cpu" class="inspector-metric-value">34%</span>
+            </div>
+            <div class="inspector-metric-box">
+              <span class="inspector-metric-label">NODE P99 LATENCY</span>
+              <span id="inspector-latency" class="inspector-metric-value">28 ms</span>
+            </div>
+            <div class="inspector-metric-box">
+              <span class="inspector-metric-label">THROUGHPUT (RPS)</span>
+              <span id="inspector-rps" class="inspector-metric-value">680 req/s</span>
+            </div>
+            <div class="inspector-metric-box">
+              <span class="inspector-metric-label">ACTIVE PODS / MAX</span>
+              <span id="inspector-pods" class="inspector-metric-value">6 / 16</span>
+            </div>
+          </div>
+
+          <!-- Secondary Error / Circuit Breaker Status Strip -->
+          <div class="inspector-error-strip">
+            <span class="inspector-error-label">LOCAL 5XX ERROR / DROP RATE</span>
+            <span id="inspector-error" class="inspector-error-value">0.00%</span>
+          </div>
+
+          <!-- Targeted Node Chaos & Scaling Action Buttons -->
+          <div class="inspector-actions-row">
+            <button type="button" id="btn-node-toggle-down" class="inspector-btn inspector-btn-danger">
+              Terminate Service
+            </button>
+            <button type="button" id="btn-node-add-latency" class="inspector-btn inspector-btn-warning">
+              +250ms Latency
+            </button>
+            <button type="button" id="btn-node-scale-up" class="inspector-btn inspector-btn-cyan">
+              +2 GKE Pods
+            </button>
+          </div>
+        </section>
+
+        <!-- Card 2: Real-Time Golden Signals Telemetry Chart -->
+        <section class="sidebar-card telemetry-chart-card" aria-label="Real-Time Golden Signals Chart">
+          <div class="card-header-row compact-header">
+            <span class="section-eyebrow">REAL-TIME TELEMETRY (60S WINDOW)</span>
+            <div class="chart-legend-inline">
+              <span class="chart-key chart-key-cyan">SLO %</span>
+              <span class="chart-key chart-key-purple">P99 ms</span>
+              <span class="chart-key chart-key-crimson">5xx %</span>
+            </div>
+          </div>
+          <div class="metrics-canvas-wrapper">
+            <canvas id="metrics-canvas" width="360" height="140" aria-label="Real-time SLO, P99 Latency, and Error Rate chart"></canvas>
+          </div>
+        </section>
+
+        <!-- Card 3: Live SRE Incident & Auto-Remediation Event Log -->
+        <section class="sidebar-card event-log-card" aria-label="SRE Incident and Remediation Event Stream">
+          <div class="card-header-row compact-header">
+            <span class="section-eyebrow">SRE INCIDENT &amp; AUTOPILOT LOG</span>
+            <span class="live-stream-pill">LIVE STREAM</span>
+          </div>
+          <ul id="event-log-list" class="event-log-list" aria-live="polite">
+            <li class="event-item event-info">
+              <span class="event-time">00:00:00</span>
+              <span class="event-msg">AetherChaos SRE Mission Control initialized. All regional meshes healthy.</span>
+            </li>
+          </ul>
+        </section>
+
+      </aside>
+    </main>
+  </div>
+</body>
+</html>

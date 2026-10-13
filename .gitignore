@@ -1,0 +1,9 @@
+# macOS & OS artifacts
+.DS_Store
+Thumbs.db
+
+# Node / temporary files
+node_modules/
+package.json
+package-lock.json
+*.log

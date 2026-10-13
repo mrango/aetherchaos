@@ -1,0 +1,1307 @@
+/* ==========================================================================
+   AETHERCHAOS — GOOGLE CLOUD & MICROSERVICES RESILIENCE SIMULATOR
+   Mission Control Dark Obsidian & Neon Telemetry Stylesheet
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS CUSTOM PROPERTIES (DESIGN TOKENS & COLOR PALETTE)
+   Defines the dark obsidian slate foundation, glassmorphic surfaces, and
+   high-contrast neon SRE telemetry accents.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core Background & Surface Colors */
+  --bg-obsidian: #070b14;
+  --bg-deep-slate: #0b1120;
+  --bg-panel: rgba(13, 20, 36, 0.78);
+  --bg-panel-elevated: rgba(19, 29, 51, 0.85);
+  --bg-card-inner: rgba(9, 14, 26, 0.72);
+  --bg-canvas: #060a12;
+
+  /* Glassmorphism Borders & Highlights */
+  --border-subtle: rgba(148, 163, 184, 0.14);
+  --border-bright: rgba(56, 189, 248, 0.32);
+  --border-glow-cyan: rgba(0, 245, 212, 0.45);
+
+  /* Typography Hierarchy Colors */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Neon Telemetry Accent Colors */
+  --neon-cyan: #00f5d4;
+  --neon-cyan-dim: rgba(0, 245, 212, 0.14);
+  --neon-blue: #38bdf8;
+  --neon-emerald: #10b981;
+  --neon-emerald-dim: rgba(16, 185, 129, 0.15);
+  --neon-amber: #f59e0b;
+  --neon-amber-dim: rgba(245, 158, 11, 0.16);
+  --neon-crimson: #ef4444;
+  --neon-crimson-dim: rgba(239, 68, 68, 0.18);
+  --neon-purple: #a855f7;
+  --neon-purple-dim: rgba(168, 85, 247, 0.16);
+
+  /* System Typography Stacks (Zero External CDN Dependency) */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+
+  /* Elevation & Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-panel: 0 12px 32px -8px rgba(0, 0, 0, 0.65), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* --------------------------------------------------------------------------
+   2. GLOBAL RESET & BASE BODY LAYOUT
+   Configures full-viewport mission control layout with radial nebula glow.
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-obsidian);
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(0, 245, 212, 0.07) 0%, transparent 38%),
+    radial-gradient(circle at 88% 14%, rgba(168, 85, 247, 0.08) 0%, transparent 42%),
+    radial-gradient(circle at 50% 92%, rgba(56, 189, 248, 0.05) 0%, transparent 45%),
+    linear-gradient(180deg, #070b14 0%, #050811 100%);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Main Viewport Grid Container */
+.app-shell {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  gap: 10px;
+  width: 100%;
+  height: 100vh;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 10px 14px;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   3. TOP MISSION CONTROL HEADER BAR
+   Contains brand identity, architecture selector, traffic slider, HPA toggle,
+   and global system posture status badge.
+   -------------------------------------------------------------------------- */
+.top-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 16px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Brand Identity & Animated Core Orb */
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glowing Cyan Center Core */
+.brand-orb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, var(--neon-cyan) 65%);
+  box-shadow: 0 0 14px var(--neon-cyan), 0 0 28px rgba(0, 245, 212, 0.45);
+}
+
+/* Rotating Orbital Ring Around Core */
+.brand-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px dashed rgba(0, 245, 212, 0.55);
+  animation: orbitSpin 14s linear infinite;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-title {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #ffffff 0%, var(--neon-cyan) 60%, var(--neon-blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 245, 212, 0.12);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(0, 245, 212, 0.3);
+}
+
+.brand-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+/* Header Controls Group (Preset Selector, Traffic Slider, Auto-Heal Switch) */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.control-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+/* Topology Select Dropdown Styling */
+.select-wrapper {
+  position: relative;
+}
+
+.control-select {
+  appearance: none;
+  background-color: var(--bg-card-inner);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 30px 6px 11px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 265px;
+}
+
+.control-select:hover,
+.control-select:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 245, 212, 0.15);
+}
+
+/* Custom Dropdown Chevron Indicator */
+.select-wrapper::after {
+  content: "▾";
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--neon-cyan);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+/* Ingress Traffic Range Slider */
+.traffic-control-group {
+  min-width: 215px;
+}
+
+.control-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.control-value-readout {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+}
+
+.traffic-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.traffic-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  cursor: grab;
+  transition: transform 0.15s ease;
+}
+
+.traffic-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.traffic-slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  cursor: grab;
+}
+
+/* GKE Autopilot & Circuit Breaker Toggle Switch */
+.toggle-control-group {
+  padding-left: 8px;
+  border-left: 1px solid var(--border-subtle);
+}
+
+.toggle-Switch-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-checkbox {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  position: relative;
+  width: 38px;
+  height: 20px;
+  background: rgba(100, 116, 139, 0.35);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 999px;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease;
+}
+
+.toggle-checkbox:checked + .toggle-track {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: var(--neon-emerald);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+}
+
+.toggle-checkbox:checked + .toggle-track .toggle-thumb {
+  transform: translateX(18px);
+  background: var(--neon-emerald);
+  box-shadow: 0 0 8px var(--neon-emerald);
+}
+
+.toggle-text-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-subtext {
+  font-size: 10.5px;
+  color: var(--neon-emerald);
+  font-weight: 600;
+}
+
+/* Global Posture Status Badge Zone */
+.header-status-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.status-zone-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.system-status-badge,
+.inspector-status-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+}
+
+/* Status Indicator Pulse Dot */
+.system-status-badge::before,
+.inspector-status-badge::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Status Variants: Healthy, Degraded, Critical, Down, Circuit Open */
+.status-healthy,
+.healthy {
+  background: var(--neon-emerald-dim);
+  color: var(--neon-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+}
+
+.status-degraded,
+.status-warning,
+.degraded {
+  background: var(--neon-amber-dim);
+  color: var(--neon-amber);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.25);
+}
+
+.status-critical,
+.status-down,
+.status-outage,
+.critical,
+.down {
+  background: var(--neon-crimson-dim);
+  color: var(--neon-crimson);
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.35);
+  animation: pulseAlert 1.4s infinite ease-in-out;
+}
+
+.status-circuit-open,
+.status-circuit_open,
+.status-scaling {
+  background: var(--neon-purple-dim);
+  color: var(--neon-purple);
+  border: 1px solid rgba(168, 85, 247, 0.55);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.3);
+}
+
+@keyframes pulseAlert {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   4. TOP KPI TELEMETRY RIBBON & CHAOS INJECTION DECK
+   Displays the 5 Golden Signal KPI cards alongside the 6 Chaos Engineering
+   fault injection action buttons.
+   -------------------------------------------------------------------------- */
+.telemetry-and-chaos-bar {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* Five Golden Signal KPI Cards Grid */
+.kpi-ribbon {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kpi-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 11px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+
+/* Top Neon Accent Bar on KPI Cards */
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.kpi-card-cyan::before {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+}
+
+.kpi-card-purple::before {
+  background: linear-gradient(90deg, var(--neon-purple), #ec4899);
+}
+
+.kpi-card-emerald::before {
+  background: linear-gradient(90deg, var(--neon-emerald), var(--neon-cyan));
+}
+
+.kpi-card-crimson::before {
+  background: linear-gradient(90deg, var(--neon-crimson), var(--neon-amber));
+}
+
+.kpi-card-amber::before {
+  background: linear-gradient(90deg, var(--neon-amber), #eab308);
+}
+
+.kpi-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.kpi-pill {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.kpi-value {
+  font-family: var(--font-mono);
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin: 2px 0;
+}
+
+.kpi-card-cyan .kpi-value {
+  color: var(--neon-cyan);
+}
+
+.kpi-card-emerald .kpi-value {
+  color: var(--neon-emerald);
+}
+
+.kpi-card-amber .kpi-value {
+  color: var(--neon-amber);
+}
+
+.kpi-footer {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Chaos Injection Control Deck Panel */
+.chaos-deck {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+}
+
+.chaos-deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.chaos-deck-title {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  color: #fca5a5;
+}
+
+.chaos-deck-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* 3x2 Grid of Chaos Fault Injection Buttons */
+.chaos-buttons-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.chaos-btn {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: transform 0.12s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  text-align: center;
+}
+
+.chaos-btn:hover {
+  transform: translateY(-1px);
+}
+
+.chaos-btn:active {
+  transform: translateY(0);
+}
+
+/* Chaos Button Color Variants */
+.chaos-btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.45);
+}
+
+.chaos-btn-danger:hover,
+.chaos-btn-danger.active {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: var(--neon-crimson);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
+}
+
+.chaos-btn-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.45);
+}
+
+.chaos-btn-warning:hover,
+.chaos-btn-warning.active {
+  background: rgba(245, 158, 11, 0.28);
+  border-color: var(--neon-amber);
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
+}
+
+.chaos-btn-amber {
+  background: rgba(234, 179, 8, 0.14);
+  color: #fef08a;
+  border-color: rgba(234, 179, 8, 0.42);
+}
+
+.chaos-btn-amber:hover,
+.chaos-btn-amber.active {
+  background: rgba(234, 179, 8, 0.26);
+  border-color: #eab308;
+  box-shadow: 0 0 14px rgba(234, 179, 8, 0.32);
+}
+
+.chaos-btn-purple {
+  background: rgba(168, 85, 247, 0.16);
+  color: #e9d5ff;
+  border-color: rgba(168, 85, 247, 0.45);
+}
+
+.chaos-btn-purple:hover,
+.chaos-btn-purple.active {
+  background: rgba(168, 85, 247, 0.3);
+  border-color: var(--neon-purple);
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.38);
+}
+
+.chaos-btn-emerald {
+  background: rgba(16, 185, 129, 0.15);
+  color: #a7f3d0;
+  border-color: rgba(16, 185, 129, 0.45);
+}
+
+.chaos-btn-emerald:hover {
+  background: rgba(16, 185, 129, 0.28);
+  border-color: var(--neon-emerald);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
+}
+
+.chaos-btn-neutral {
+  background: rgba(56, 189, 248, 0.13);
+  color: #bae6fd;
+  border-color: rgba(56, 189, 248, 0.38);
+}
+
+.chaos-btn-neutral:hover {
+  background: rgba(56, 189, 248, 0.24);
+  border-color: var(--neon-blue);
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   5. MAIN WORKSPACE GRID (CANVAS STAGE + RIGHT SRE SIDEBAR)
+   Splits the main viewport into the interactive architecture canvas on the
+   left and the 380px telemetry sidebar on the right.
+   -------------------------------------------------------------------------- */
+.workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 12px;
+  min-height: 0;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   6. INTERACTIVE CLOUD TOPOLOGY CANVAS STAGE
+   Houses the top hint bar, HTML5 2D topology canvas, and status legend bar.
+   -------------------------------------------------------------------------- */
+.canvas-stage-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Stage Header Bar with Interactive Keyboard/Mouse Hints */
+.stage-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  background: rgba(7, 11, 20, 0.65);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.stage-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stage-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan);
+  animation: liveBlink 2s infinite ease-in-out;
+}
+
+@keyframes liveBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.stage-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-primary);
+}
+
+.stage-interaction-hints {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hint-chip {
+  font-size: 10.5px;
+  color: var(--text-secondary);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.hint-chip kbd {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  margin-right: 4px;
+}
+
+/* Main Topology Canvas Viewport */
+.canvas-viewport {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(14, 24, 45, 0.85) 0%, var(--bg-canvas) 100%);
+  min-height: 0;
+  overflow: hidden;
+}
+
+#topology-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* Stage Footer Legend Bar */
+.stage-legend-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 14px;
+  background: rgba(7, 11, 20, 0.75);
+  border-top: 1px solid var(--border-subtle);
+  font-size: 11px;
+}
+
+.legend-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.legend-healthy {
+  background: var(--neon-emerald);
+  box-shadow: 0 0 8px var(--neon-emerald);
+}
+
+.legend-degraded {
+  background: var(--neon-amber);
+  box-shadow: 0 0 8px var(--neon-amber);
+}
+
+.legend-circuit-open {
+  background: var(--neon-purple);
+  box-shadow: 0 0 8px var(--neon-purple);
+}
+
+.legend-down {
+  background: var(--neon-crimson);
+  box-shadow: 0 0 8px var(--neon-crimson);
+}
+
+.legend-scaling {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan);
+}
+
+.legend-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   7. RIGHT SIDEBAR (NODE INSPECTOR, SPARKLINE CHART, SRE EVENT LOG)
+   Vertical stack of three telemetry cards on the right side of the workspace.
+   -------------------------------------------------------------------------- */
+.sre-sidebar {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  gap: 10px;
+  min-height: 0;
+  height: 100%;
+}
+
+.sidebar-card {
+  background: var(--bg-panel);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 11px 13px;
+  box-shadow: var(--shadow-panel);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+.compact-header {
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+}
+
+/* Node Inspector Card */
+.inspector-title-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inspector-node-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.inspector-node-type {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--text-secondary);
+}
+
+/* 2x2 Grid of Selected Node Telemetry Metrics */
+.inspector-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin-bottom: 8px;
+}
+
+.inspector-metric-box {
+  background: var(--bg-card-inner);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 6px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.inspector-metric-label {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.inspector-metric-value {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+/* Node Error Rate Highlight Strip */
+.inspector-error-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 9px;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.24);
+  border-radius: var(--radius-sm);
+  margin-bottom: 9px;
+}
+
+.inspector-error-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: #fca5a5;
+}
+
+.inspector-error-value {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 800;
+  color: var(--neon-crimson);
+}
+
+/* Node Action Buttons Row */
+.inspector-actions-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.inspector-btn {
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 6px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inspector-btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fecaca;
+  border-color: rgba(239, 68, 68, 0.42);
+}
+
+.inspector-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.28);
+  border-color: var(--neon-crimson);
+}
+
+.inspector-btn-warning {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fde68a;
+  border-color: rgba(245, 158, 11, 0.42);
+}
+
+.inspector-btn-warning:hover {
+  background: rgba(245, 158, 11, 0.28);
+  border-color: var(--neon-amber);
+}
+
+.inspector-btn-cyan {
+  background: rgba(0, 245, 212, 0.13);
+  color: var(--neon-cyan);
+  border-color: rgba(0, 245, 212, 0.4);
+}
+
+.inspector-btn-cyan:hover {
+  background: rgba(0, 245, 212, 0.25);
+  border-color: var(--neon-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   8. REAL-TIME TELEMETRY SPARKLINE CHART CARD
+   Renders the 60-second rolling SLO, P99 latency, and 5xx canvas chart.
+   -------------------------------------------------------------------------- */
+.chart-legend-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chart-key {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.chart-key::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.chart-key-cyan {
+  color: var(--neon-cyan);
+}
+
+.chart-key-cyan::before {
+  background: var(--neon-cyan);
+}
+
+.chart-key-purple {
+  color: var(--neon-purple);
+}
+
+.chart-key-purple::before {
+  background: var(--neon-purple);
+}
+
+.chart-key-crimson {
+  color: var(--neon-crimson);
+}
+
+.chart-key-crimson::before {
+  background: var(--neon-crimson);
+}
+
+.metrics-canvas-wrapper {
+  width: 100%;
+  height: 118px;
+  background: var(--bg-card-inner);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#metrics-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   9. SRE INCIDENT & AUTO-REMEDIATION EVENT LOG STREAM
+   Scrollable real-time terminal feed displaying chaos faults, circuit
+   breaker trips, and GKE Autopilot scaling events.
+   -------------------------------------------------------------------------- */
+.event-log-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.live-stream-pill {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  color: var(--neon-emerald);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.event-log-list {
+  list-style: none;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-right: 4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+}
+
+/* Custom Sleek Scrollbar for Event Log */
+.event-log-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.event-log-list::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.4);
+  border-radius: 4px;
+}
+
+.event-log-list::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.28);
+  border-radius: 4px;
+}
+
+/* Default & Severity-Specific Event Log Entries */
+.event-log-list li {
+  padding: 5px 8px;
+  background: var(--bg-card-inner);
+  border-left: 3px solid var(--neon-blue);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.event-log-list li.event-info,
+.event-log-list li.log-info,
+.event-log-list li.info {
+  border-left-color: var(--neon-blue);
+}
+
+.event-log-list li.event-warn,
+.event-log-list li.event-warning,
+.event-log-list li.log-warn,
+.event-log-list li.log-warning,
+.event-log-list li.warning,
+.event-log-list li.warn {
+  border-left-color: var(--neon-amber);
+  background: rgba(245, 158, 11, 0.08);
+  color: #fde68a;
+}
+
+.event-log-list li.event-error,
+.event-log-list li.event-critical,
+.event-log-list li.event-danger,
+.event-log-list li.event-chaos,
+.event-log-list li.log-error,
+.event-log-list li.log-critical,
+.event-log-list li.log-chaos,
+.event-log-list li.error,
+.event-log-list li.critical,
+.event-log-list li.chaos {
+  border-left-color: var(--neon-crimson);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+}
+
+.event-log-list li.event-heal,
+.event-log-list li.event-success,
+.event-log-list li.log-heal,
+.event-log-list li.log-success,
+.event-log-list li.heal,
+.event-log-list li.success {
+  border-left-color: var(--neon-emerald);
+  background: rgba(16, 185, 129, 0.09);
+  color: #a7f3d0;
+}
+
+.event-time,
+.log-time,
+.timestamp {
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.event-msg,
+.log-msg {
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   10. RESPONSIVE MEDIA QUERIES
+   Gracefully adapts the layout for smaller laptops and tablets while keeping
+   single-screen mission control density on 1080p+ displays.
+   -------------------------------------------------------------------------- */
+@media (max-width: 1440px) {
+  .telemetry-and-chaos-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .chaos-buttons-row {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1180px) {
+  .app-shell {
+    height: auto;
+    overflow: visible;
+  }
+
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chaos-buttons-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
