@@ -1285,8 +1285,8 @@
     }
 
     /**
-     * Multiplies `targetRps` by 2.8x (clamped up to 5000 RPS) to simulate a DDoS
-     * or viral flash-crowd traffic surge.
+     * Multiplies `targetRps` by 3x (clamped up to 5000 RPS) to simulate a
+     * viral flash-crowd traffic surge.
      *
      * @returns {number} Newly applied `targetRps`.
      */
@@ -1294,7 +1294,7 @@
       const previousRps = this.targetRps;
       const spikedRps = Math.min(
         BOUNDS.MAX_TARGET_RPS,
-        Math.round(this.targetRps * 2.8)
+        Math.round(this.targetRps * 3.0)
       );
       this.targetRps = Math.max(BOUNDS.MIN_TARGET_RPS, spikedRps);
 

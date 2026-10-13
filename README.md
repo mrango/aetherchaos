@@ -22,6 +22,7 @@ flowchart LR
 | **`index.html` & `style.css`** | SRE Mission Control console layout, Golden Signals KPI ribbon, Chaos Injection Deck, Node Inspector drawer, and strict Content Security Policy (`default-src 'self'`). |
 | **`simulator-engine.js`** | Core distributed systems simulation engine (`window.ChaosEngine`): forward traffic routing, non-linear queueing congestion curves, reverse-topological backpressure propagation, HPA scaling state machine, and Circuit Breaker logic. |
 | **`visualizer-app.js`** | High-DPI HTML5 Canvas renderer for the directed acyclic graph (DAG), cubic Bézier conduits, animated telemetry packets, rolling 60-second Golden Signals sparklines, and safe DOM controller. |
+| **`test/contract.test.js`** | Automated cross-agent contract & physics test suite (`node:test`) verifying DOM bindings, shared state aliases (`state.kpis` / `state.globalMetrics`), non-null event timestamps (`time` / `timeStr`), HPA scaling, and cascading failure recovery. |
 
 ---
 
@@ -48,22 +49,26 @@ flowchart LR
 ### Engineering Boundaries & Intentional Simplifications
 This project is a **first-order architectural sandbox** for design reviews, what-if exploration, and SRE training—not a replacement for production load testing (`k6`, `Locust`) or live observability:
 - **Heuristic Tail Latency**: Uses deterministic congestion curves rather than heavy-tailed token-length distributions ($M/G/c$) typical of variable-length LLM inference.
-- **Accelerated HPA Readiness**: Uses a `1.6s` scaling cooldown so autoscaling feedback is immediately visible during interactive demos (whereas real GKE node provisioning and container/model cold starts take tens of seconds).
+- **Accelerated HPA Readiness**: Applies HPA pod scale-ups instantly with a `1.6s` cooldown between steps so autoscaling feedback is immediately visible during interactive demos (whereas real GKE node provisioning and container/model cold starts take tens of seconds).
 - **Static Baseline Capacities**: Per-pod capacities (`capacityPerPod`) and base latencies are synthetic presets rather than calibrated against live cluster telemetry.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start & Contract Tests
 
-No build step or external dependencies are required.
+No external npm dependencies are required.
 
 ```bash
 # Clone the repository
 git clone https://github.com/mrango/aetherchaos.git
 cd aetherchaos
 
-# Start a local HTTP server bound to localhost
-python3 -m http.server 8765 --bind 127.0.0.1
+# Run the automated cross-agent contract & physics test suite (Node >= 18)
+npm test
+
+# Start the local HTTP server bound to localhost
+npm start
+# (or: python3 -m http.server 8765 --bind 127.0.0.1)
 ```
 
 Then open **`http://127.0.0.1:8765`** in your browser.

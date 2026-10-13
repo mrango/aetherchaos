@@ -1,0 +1,26 @@
+{
+  "name": "aetherchaos",
+  "version": "1.0.0",
+  "description": "Interactive Cloud Architecture & Chaos Engineering Sandbox for visualizing queueing congestion, DAG backpressure, HPA scaling, and Circuit Breakers.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mrango/aetherchaos.git"
+  },
+  "keywords": [
+    "chaos-engineering",
+    "sre",
+    "gcp",
+    "google-cloud",
+    "vertex-ai",
+    "distributed-systems",
+    "resilience"
+  ],
+  "scripts": {
+    "test": "node --test test/contract.test.js",
+    "start": "python3 -m http.server 8765 --bind 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
