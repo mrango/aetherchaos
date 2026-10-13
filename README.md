@@ -81,3 +81,10 @@ Then open **`http://127.0.0.1:8765`** in your browser.
 - **Strict Content Security Policy (CSP)**: Enforces `default-src 'self'; script-src 'self'; style-src 'self'` with zero inline scripts or inline styles.
 - **Safe DOM Manipulation**: Uses `document.createElement()`, `textContent`, and `replaceChildren()` exclusively—zero `innerHTML` or dynamic code execution sinks.
 - **Input Validation**: All user-controlled parameters (topology keys, traffic slider values, node IDs, pod counts) are validated against strict allow-lists and clamped numeric bounds.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
